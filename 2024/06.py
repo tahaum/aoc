@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from utils.io import read_input
 
 data_path = "data/input_06.txt"
@@ -26,12 +24,11 @@ def solve_p1() -> int:
     visited = []
     dx, dy = (0, -1)
     x, y = find_start_pos()
-    grid = deepcopy(GRID)
     while within(x, y):
         if (x, y) not in visited:
             visited.append((x, y))
-        if within(x + dx, y + dy) and grid[y + dy][x + dx] == "#":
-            while grid[y + dy][x + dx] == "#":
+        if within(x + dx, y + dy) and GRID[y + dy][x + dx] == "#":
+            while GRID[y + dy][x + dx] == "#":
                 dx, dy = rotate((dx, dy))
         x += dx
         y += dy
@@ -44,14 +41,14 @@ def solve_p2() -> int:
     for pos in original_route[1:]:
         x, y = original_route[0]
         x_obs, y_obs = (int(i) for i in pos)
-        grid = deepcopy(GRID)
-        grid[y_obs][x_obs] = "O"
         visited = set()
         dx, dy = (0, -1)
         while within(x, y):
             visited.add((x, y, dx, dy))
-            if within(x + dx, y + dy) and grid[y + dy][x + dx] in ("#", "O"):
-                while grid[y + dy][x + dx] in ("#", "O"):
+            if within(x + dx, y + dy) and (
+                GRID[y + dy][x + dx] == "#" or (x + dx, y + dy) == (x_obs, y_obs)
+            ):
+                while GRID[y + dy][x + dx] == "#" or (x + dx, y + dy) == (x_obs, y_obs):
                     dx, dy = rotate((dx, dy))
             x += dx
             y += dy
